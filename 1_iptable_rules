@@ -1,0 +1,14 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT DROP [0:0]
+:test - [0:0]
+:test_input - [0:0]
+-A INPUT -j test_input
+-A INPUT -j ACCEPT
+-A OUTPUT -j test
+-A OUTPUT -j ACCEPT
+
+-A test -s 192.168.10.1 -j DROP
+-A test_input -s 192.168.10.1 -j DROP
+COMMIT

@@ -1,0 +1,34 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT DROP [0:0]
+:test - [0:0]
+:test_input - [0:0]
+-A INPUT -j test_input
+-A INPUT -j ACCEPT
+-A OUTPUT -j test
+-A OUTPUT -j ACCEPT
+
+-A test -s 192.168.120.0 -j DROP
+-A test_input -s 192.168.120.0 -j DROP
+-A test -s 192.168.120.1 -j DROP
+-A test_input -s 192.168.120.1 -j DROP
+-A test -s 192.168.120.2 -j DROP
+-A test_input -s 192.168.120.2 -j DROP
+-A test -s 192.168.120.3 -j DROP
+-A test_input -s 192.168.120.3 -j DROP
+-A test -s 192.168.120.4 -j DROP
+-A test_input -s 192.168.120.4 -j DROP
+-A test -s 192.168.120.5 -j DROP
+-A test_input -s 192.168.120.5 -j DROP
+-A test -s 192.168.120.6 -j DROP
+-A test_input -s 192.168.120.6 -j DROP
+-A test -s 192.168.120.7 -j DROP
+-A test_input -s 192.168.120.7 -j DROP
+-A test -s 192.168.120.8 -j DROP
+-A test_input -s 192.168.120.8 -j DROP
+-A test -s 192.168.120.9 -j DROP
+-A test_input -s 192.168.120.9 -j DROP
+-A test -s 192.168.120.10 -j DROP
+-A test_input -s 192.168.120.10 -j DROP
+COMMIT

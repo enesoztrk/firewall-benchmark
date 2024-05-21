@@ -1,0 +1,84 @@
+  # Allow Specific Ports (e.g., HTTP, SSH)
+    echo "Allow Specific Ports (HTTP, SSH):"
+    iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+    iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -F  # Reset rules
+
+    # Deny Specific Ports (e.g., FTP, Telnet)
+    echo "Deny Specific Ports (FTP, Telnet):"
+    iptables -A INPUT -p tcp --dport 21 -j DROP
+    iptables -A INPUT -p tcp --dport 23 -j DROP
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -F  # Reset rules
+
+    # Allow Specific IP Addresses
+    echo "Allow Specific IP Addresses:"
+    iptables -A INPUT -s 192.168.1.100 -j ACCEPT
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -F  # Reset rules
+
+    # Deny Specific IP Addresses
+    echo "Deny Specific IP Addresses:"
+    iptables -A INPUT -s 192.168.1.200 -j DROP
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -F  # Reset rules
+
+    # Mixed Rule Sets
+    echo "Mixed Rule Sets:"
+    iptables -A INPUT -s 192.168.1.100 -j ACCEPT
+    iptables -A INPUT -p tcp --dport 80 -j DROP
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -F  # Reset rules
+
+    # NAT (Network Address Translation)
+    echo "NAT (Network Address Translation):"
+    iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth0 -j MASQUERADE
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -t nat -F  # Reset rules
+
+    # Stateful Inspection
+    echo "Stateful Inspection:"
+    iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -F  # Reset rules
+
+    # Connection Tracking
+    echo "Connection Tracking:"
+    iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    iptables -A INPUT -p tcp --syn -j ACCEPT
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -F  # Reset rules
+
+    # Policy Changes
+    echo "Policy Changes:"
+    iptables -A INPUT -j ACCEPT
+    measure_throughput
+    measure_latency
+    measure_cpu_utilization
+    measure_memory_consumption
+    iptables -F  # Reset rules
