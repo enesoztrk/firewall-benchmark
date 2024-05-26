@@ -1,0 +1,3 @@
+[submodule "nixos-tc-aya-test"]
+	path = nixos-tc-aya-test
+	url = https://github.com/enesoztrk/nixos-tc-aya-test

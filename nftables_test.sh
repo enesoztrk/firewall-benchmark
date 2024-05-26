@@ -1,10 +1,11 @@
 #!/bin/bash
 
 FOLDER_NAME="nftables"
+RULE_FOLDER="iptables_rules"
 SAMPLING_NUM=100
 PING_NUM=30
 SCALE=254
-SERVER_IP=192.168.1.8
+SERVER_IP=$1
 RULES_FILES=(
     "1_iptable_rules"
     "10_iptable_rules"
@@ -74,7 +75,6 @@ measure_memory_consumption() {
 
 reset_iptables_rules(){
  iptables -F
- iptables -F test
  iptables -F test_input
  iptables -X 
  iptables -P INPUT DROP
@@ -85,14 +85,11 @@ reset_iptables_rules(){
 deny_all_iptables() {
 SCALE_INDEX=$(( $1 % 254 ))
 if [[ $SCALE_INDEX -eq -1 ]]; then
-        iptables -N test
-        iptables -A OUTPUT -j test
         iptables -A OUTPUT -j ACCEPT
         iptables -N test_input
         iptables -A INPUT -j test_input
         iptables -A INPUT -j ACCEPT
 else
-        iptables -A test -s 10.11.100.$SCALE_INDEX -j DROP
         iptables -A test_input -s 10.11.100.$SCALE_INDEX -j DROP
 fi
 }
@@ -105,8 +102,8 @@ deny_all_test_tcp(){
 
 for file in "${RULES_FILES[@]}"; do    
     total_num_rule=$(echo "$file" | grep -o '^[0-9]\+')
-    echo "ip-restore $file"
-    iptables-restore < "$file"
+    echo "ip-restore $RULE_FOLDER/$file"
+    iptables-restore < "$RULE_FOLDER/$file"
     tcp_measure_throughput "$total_num_rule" "deny_all"
     measure_latency "$total_num_rule" "deny_all"
     measure_memory_consumption "$total_num_rule" "deny_all"
@@ -124,8 +121,8 @@ deny_all_test_cpu_tcp(){
     
 for file in "${RULES_FILES[@]}"; do
     total_num_rule=$(echo "$file" | grep -o '^[0-9]\+')
-     echo "ip-restore $file"
-    iptables-restore < "$file"
+     echo "ip-restore $RULE_FOLDER/$file"
+    iptables-restore < "$RULE_FOLDER/$file"
     tcp_measure_throughput "$total_num_rule" "deny_all" "cpu"
     reset_iptables_rules
     done
